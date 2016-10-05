@@ -1,4 +1,5 @@
 from random import choice
+from sys import argv
 
 # --------------------------------- DEFINING FUNCTIONS -------------------------
 
@@ -87,7 +88,7 @@ def run_recursion(count, given_array, a, b = None):
 
 # --------------------------------- EXECUTABLE CODE --------------------------
 
-int_array = read_file_to_be_sorted('QuickSort_mini.txt')
+int_array = read_file_to_be_sorted(argv[1])
 
 count = 1
 int_array = run_recursion(count, int_array, 0)
