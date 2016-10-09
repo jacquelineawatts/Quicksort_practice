@@ -11,7 +11,6 @@ def read_file_to_be_sorted(filename):
     array_all = quiz_file.read().splitlines()
     quiz_file.close()
 
-    # convert str list to int
     int_array = []
     for x in array_all:
         y = int(x)
@@ -36,28 +35,25 @@ def swap(item1, item2):
     return item1, item2
 
 
-def print_breakdown(count, int_array, start_index, end_index, pivot):
+def print_breakdown(depth, int_array, start_index, end_index, pivot):
 
-    print "\nBreakdown after recursion #{}:".format(count)
-    print int_array[start_index:pivot-1]
-    print ""
-    print int_array[pivot-1]
-    print ""
-    print int_array[pivot:end_index]
+    print "\nFor recursion of depth: #{}".format(depth)
+    print "The pivot element is {}.".format(pivot)
+    print "BREAKDOWN:"
+    print "   Left half: {}".format(int_array[start_index:pivot-1])
+    print "   Pivot element: {}".format(int_array[pivot-1])
+    print "   Right half: {}".format(int_array[pivot:end_index])
 
 
 def handle_base_case(int_array, start_index, end_index):
     """Checks for base case of two items and runs basic swap if needed"""
 
-    if end_index is not None:
-        end_index = end_index + 1
-
-    if (len(int_array[start_index:end_index]) == 2) and (int_array[start_index] > int_array[start_index +1]):
-        int_array[start_index], int_array[start_index+1] = swap(int_array[start_index], int_array[start_index+1])
+    if (len(int_array[start_index:end_index]) == 2) and (int_array[start_index] > int_array[start_index + 1]):
+        int_array[start_index], int_array[start_index + 1] = swap(int_array[start_index], int_array[start_index + 1])
 
 
 def run_quicksort(depth, int_array, start_index, end_index):
-    """Execute a single recursion loop around the randomly selected pivot element. """
+    """Execute quicksort recursion loop around the randomly selected pivot element. """
 
     depth += 1
 
@@ -67,11 +63,9 @@ def run_quicksort(depth, int_array, start_index, end_index):
     if len(int_array[start_index:end_index]) > 2:
 
         i, j = start_index + 1, start_index + 1
+
         # Grabs a random pivot and its index
         pivot, pivot_index = select_random_pivot(int_array, start_index, end_index)
-        # pivot = int_array[start_index]
-        print "This is a recursion of depth: {}".format(depth)
-        print "The pivot element is {}.\n".format(pivot)
 
         # Swaps the selected pivot with the 0th element in the array
         int_array[start_index], int_array[pivot_index] = swap(int_array[start_index], pivot)
@@ -86,19 +80,17 @@ def run_quicksort(depth, int_array, start_index, end_index):
         # When elements sorted around pivot, swaps pivot to absolute place
         int_array[start_index], int_array[pivot-1] = swap(int_array[start_index], int_array[pivot-1])
 
-        # UNCOMMENT FOR TROUBLESHOOTING: Prints the breakdown of one recursive loop
-        # print_breakdown(count, int_array, start_index, end_index, pivot)
+        # UNCOMMENT FOR TROUBLESHOOTING:
+        # print_breakdown(depth, int_array, start_index, end_index, pivot)
 
-        run_quicksort(depth, int_array, start_index, pivot-1)
+        run_quicksort(depth, int_array, start_index, pivot-2)
         run_quicksort(depth, int_array, pivot, end_index)
 
     else:
         handle_base_case(int_array, start_index, end_index)
 
 
-
 # --------------------------------- EXECUTABLE CODE --------------------------
-
 int_array = read_file_to_be_sorted(argv[1])
 
 depth = 0
